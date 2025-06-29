@@ -1,0 +1,355 @@
+body {
+    margin: 0;
+    font-family: 'Segoe UI', Arial, sans-serif;
+    min-height: 100vh;
+    background: linear-gradient(135deg, #0f2027, #2c5364, #1c92d2, #f2fcfe);
+    overflow-x: hidden;
+    position: relative;
+}
+#all-cryptos {
+  list-style: none;
+  padding-left: 0;
+  margin: 0;
+}
+.crypto-bg {
+    position: fixed;
+    top: 0; left: 0; width: 100vw; height: 100vh;
+    z-index: 0;
+    pointer-events: none;
+    overflow: hidden;
+}
+
+.crypto-bg i {
+    position: absolute;
+    font-size: 40px;
+    opacity: 0.7;
+    filter: brightness(2.2);
+    animation:float 8s infinite ease-in-out;
+}
+
+/* Assign colors for each currency */
+.crypto-bg .bitcoin { color: #f7931a; }
+.crypto-bg .ethereum { color: #3c3c3d; }
+.crypto-bg .litecoin { color: #b4b4b4; }
+.crypto-bg .monero { color: #ff6600; }
+.crypto-bg .dash { color: #1c75bc; }
+.crypto-bg .dogecoin { color: #c2a633; }
+.crypto-bg .xrp { color: #23292f; }
+.crypto-bg .usdt { color: #26a17b; }
+.crypto-bg .cardano { color: #0033ad; }
+
+/* You may want to add more nth-child rules for positioning and animation-delay */
+.crypto-bg i:nth-child(1)  { left: 2vw;  top: 6vh; }
+.crypto-bg i:nth-child(2)  { left: 8vw;  top: 18vh; }
+.crypto-bg i:nth-child(3)  { left: 14vw; top: 30vh; }
+.crypto-bg i:nth-child(4)  { left: 20vw; top: 10vh; }
+.crypto-bg i:nth-child(5)  { left: 26vw; top: 22vh; }
+.crypto-bg i:nth-child(6)  { left: 32vw; top: 34vh; }
+.crypto-bg i:nth-child(7)  { left: 38vw; top: 14vh; }
+.crypto-bg i:nth-child(8)  { left: 44vw; top: 26vh; }
+.crypto-bg i:nth-child(9)  { left: 50vw; top: 38vh; }
+.crypto-bg i:nth-child(10) { left: 56vw; top: 8vh; }
+.crypto-bg i:nth-child(11) { left: 62vw; top: 20vh; }
+.crypto-bg i:nth-child(12) { left: 68vw; top: 32vh; }
+.crypto-bg i:nth-child(13) { left: 74vw; top: 12vh; }
+.crypto-bg i:nth-child(14) { left: 80vw; top: 24vh; }
+.crypto-bg i:nth-child(15) { left: 86vw; top: 36vh; }
+.crypto-bg i:nth-child(16) { left: 92vw; top: 16vh; }
+.crypto-bg i:nth-child(17) { left: 5vw;  top: 60vh; }
+.crypto-bg i:nth-child(18) { left: 11vw; top: 72vh; }
+.crypto-bg i:nth-child(19) { left: 17vw; top: 84vh; }
+.crypto-bg i:nth-child(20) { left: 23vw; top: 64vh; }
+.crypto-bg i:nth-child(21) { left: 29vw; top: 76vh; }
+.crypto-bg i:nth-child(22) { left: 35vw; top: 88vh; }
+.crypto-bg i:nth-child(23) { left: 41vw; top: 68vh; }
+.crypto-bg i:nth-child(24) { left: 47vw; top: 80vh; }
+.crypto-bg i:nth-child(25) { left: 53vw; top: 92vh; }
+.crypto-bg i:nth-child(26) { left: 59vw; top: 72vh; }
+.crypto-bg i:nth-child(27) { left: 65vw; top: 84vh; }
+.crypto-bg i:nth-child(28) { left: 71vw; top: 64vh; }
+.crypto-bg i:nth-child(29) { left: 77vw; top: 76vh; }
+.crypto-bg i:nth-child(30) { left: 83vw; top: 88vh; }
+.crypto-bg i:nth-child(31) { left: 89vw; top: 68vh; }
+.crypto-bg i:nth-child(32) { left: 95vw; top: 80vh; }
+.crypto-bg i:nth-child(33) { left: 15vw; top: 50vh; }
+.crypto-bg i:nth-child(34) { left: 35vw; top: 50vh; }
+.crypto-bg i:nth-child(35) { left: 55vw; top: 50vh; }
+.crypto-bg i:nth-child(36) { left: 75vw; top: 50vh; }
+
+@keyframes float {
+    0% { transform: translateY(0) scale(1);}
+    50% { transform: translateY(-80px) scale(1.15);}
+    100% { transform: translateY(0) scale(1);}
+}
+
+.ticker-container {
+    width: 100vw;
+    background: #111111c0;
+    overflow: hidden;
+    padding: 4px 0;
+    margin-bottom: 0;
+    position: fixed;
+    top: 0;
+    left: 0;
+    z-index: 1000;
+    height: 32px;
+}
+
+.ticker {
+    display: flex;
+    white-space: nowrap;
+    animation: tickerMove 30s linear infinite;
+    color: #fff;
+    font-size: 1em;
+    font-family: Georgia, 'Times New Roman', Times, serif;
+}
+@keyframes tickerMove {
+    0% { transform: translateX(100vw);}
+    100% { transform: translateX(-100vw);}
+}
+
+.main-content {
+    padding-top: 48px; /* space for ticker */
+    display: flex;
+    flex-direction: row;
+    min-height: 100vh;
+    z-index: 1;
+    position: relative;
+}
+
+.left-panel {
+    width: 70vw;
+    max-width: 1100px;
+    min-width: 350px;
+    margin-left: 40px;
+    display: flex;
+    flex-direction: column;
+    gap: 32px;
+    z-index: 2;
+}
+
+.crypto-info {
+    margin-top: 24px;
+    background: rgba(255, 255, 255, 0.742);
+    border-radius: 16px;
+    padding: 18px 32px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+}
+
+.crypto-info h2 {
+    margin: 0 0 10px 0;
+    font-size: 1.15em;
+    color: #1c92d2;
+}
+
+.crypto-grid {
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    gap: 14px;
+    margin: 20px 0;
+}
+
+.crypto-card {
+    background: #78777791;
+    border-radius: 12px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+    padding: 10px 6px;
+    text-align: center;
+    transition: transform 0.2s;
+}
+.crypto-card:hover {
+    transform: scale(1.05);
+}
+.crypto-icon {
+    width: 28px;
+    height: 28px;
+    margin-bottom: 6px;
+}
+.crypto-name {
+    font-weight: bold;
+    margin-bottom: 2px;
+    font-size: 0.98em;
+}
+.crypto-price {
+    font-size: 1em;
+    margin-bottom: 2px;
+}
+.crypto-change {
+    font-size: 0.95em;
+}
+
+.view-more-link {
+    display: inline-block;
+    background: #1c92d2;
+    color: #fff;
+    padding: 8px 18px;
+    border-radius: 8px;
+    text-decoration: none;
+    font-weight: bold;
+    transition: background 0.2s;
+}
+.view-more-link:hover {
+    background: #155a8a;
+}
+
+.news-articles-row {
+    display: flex;
+    flex-direction: row;
+    gap: 24px;
+    width: 100%;
+}
+
+.crypto-news, .crypto-articles {
+    flex: 1 1 0;
+    background: rgba(255, 255, 255, 0.712);
+    border-radius: 16px;
+    padding: 18px 24px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+    min-width: 0;
+}
+
+.crypto-news h2, .crypto-articles h2 {
+    margin: 0 0 10px 0;
+    font-size: 1.1em;
+    color: #1c92d2;
+}
+
+.crypto-news ul, .crypto-articles ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.crypto-news ul li, .crypto-articles ul li {
+    margin-bottom: 10px;
+    font-size: 0.98em;
+}
+
+.crypto-news ul li a, .crypto-articles ul li a {
+    color: #0033ad;
+    text-decoration: none;
+    font-weight: 500;
+}
+
+.crypto-news ul li a:hover, .crypto-articles ul li a:hover {
+    text-decoration: underline;
+}
+
+.chatbot-fixed {
+    position: fixed;
+    right: 0;
+    bottom: 0;
+    width: 25vw;
+    min-width: 240px;
+    max-width: 350px;
+    z-index: 2000;
+    padding: 0 10px 10px 10px;
+    box-sizing: border-box;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+}
+
+.chatbot-container {
+    width: 100%;
+    min-width: 200px;
+    max-width: 300px;
+    height: 100%;
+    margin-bottom: 10px;
+    background: rgba(217, 217, 217, 0.743);
+    border-radius: 25px;
+    box-shadow: 0 4px 24px rgba(0,0,0,0.12);
+    padding: 5px 5px 10px 5px; /* Increased padding for better spacing */
+    display: flex;
+    flex-direction: column;
+    overflow: hidden; /* Prevent spill */
+    font-family: Cambria, Cochin, Georgia, Times, 'Times New Roman', serif;
+}
+
+.chatbot-header {
+    display: flex;
+    align-items: center;
+    background: #1c92d2;
+    color: #fff;
+    border-radius: 18px 18px 0 0;
+    padding: 12px 18px;
+    font-size: 1.1em;
+    font-weight: bold;
+}
+
+.chatbot-icon {
+    width: 28px;
+    height: 28px;
+    margin-right: 10px;
+}
+
+.chatbot-messages {
+    min-height: 180px;
+    max-height: 350px;
+    overflow-y: auto;
+    padding: 12px;
+    font-size: 1em;
+    word-break: break-word;
+    flex: 1 1 auto;
+    box-sizing: border-box;
+}
+
+.bot-message, .user-message {
+    margin: 8px 0;
+    padding: 8px 12px;
+    border-radius: 12px;
+    max-width: 80%;
+    word-break: break-word;
+}
+
+.bot-message {
+    background: #e3f2fd;
+    color: #222;
+    align-self: flex-start;
+}
+
+.user-message {
+    background: #1c92d2;
+    color: #fff;
+    align-self: flex-end;
+    margin-left: auto;
+}
+
+#chat-form {
+    display: flex;
+    border-top: 1px solid #eee;
+    padding: 10px 15px 0 15px;
+}
+
+#user-input {
+    flex: 1;
+    padding: 8px 12px;
+    border-radius: 8px;
+    border: 1px solid #ccc;
+    font-size: 1em;
+}
+
+#chat-form button {
+    background: #1c92d2;
+    color: #fff;
+    border: none;
+    border-radius: 8px;
+    margin-left: 8px;
+    padding: 0 16px;
+    font-size: 1.1em;
+    cursor: pointer;
+    transition: background 0.2s;
+}
+
+#chat-form button:hover {
+    background: #155a8a;
+}
+
+@media (max-width: 1200px) {
+    .main-content { flex-direction: column; }
+    .left-panel { width: 98vw; margin-left: 0; }
+    .news-articles-row { flex-direction: column; gap: 18px; }
+    .chatbot-fixed { position: static; width: 98vw; max-width: 98vw; min-width: 0; align-items: center; }
+    .chatbot-container { max-width: 98vw; }
+    .crypto-grid { grid-template-columns: repeat(2, 1fr); }
+}

@@ -1,53 +1,125 @@
+import requests
+import re
+
 bot_name = "CryptoBuddy"
 greeting = "Hey there! 👋 I'm CryptoBuddy, your AI sidekick for smart crypto advice!"
 
-crypto_db = {
-    "Bitcoin": {
-        "price_trend": "rising",
-        "market_cap": "high",
-        "energy_use": "high",
-        "sustainability_score": 3/10
-    },
-    "Ethereum": {
-        "price_trend": "stable",
-        "market_cap": "high",
-        "energy_use": "medium",
-        "sustainability_score": 6/10
-    },
-    "Cardano": {
-        "price_trend": "rising",
-        "market_cap": "medium",
-        "energy_use": "low",
-        "sustainability_score": 8/10
+def fetch_crypto_db():
+    url = "https://api.coingecko.com/api/v3/coins/markets"
+    params = {
+        "vs_currency": "usd",
+        "order": "market_cap_desc",
+        "per_page": 50,
+        "page": 1,
+        "sparkline": "false"
     }
-}
+    response = requests.get(url, params=params)
+    data = response.json()
+    crypto_db = {}
+    symbol_lookup = {}
+    for coin in data:
+        name = coin['name'].lower()
+        symbol = coin['symbol'].lower()
+        crypto_db[name] = {
+            "symbol": coin['symbol'].upper(),
+            "price": coin['current_price'],
+            "market_cap": coin['market_cap'],
+            "price_trend": "rising" if coin['price_change_percentage_24h'] > 0 else "falling",
+            "price_change_24h": coin['price_change_percentage_24h'],
+        }
+        symbol_lookup[symbol] = name
+    return crypto_db, symbol_lookup
 
-user_query = input("Ask me anything about crypto: ").lower()
+def find_coin_in_query(user_query, crypto_db, symbol_lookup):
+    words = user_query.split()
+    for word in words:
+        word = word.lower()
+        if word in crypto_db:
+            return word, crypto_db[word]
+        if word in symbol_lookup:
+            name = symbol_lookup[word]
+            return name, crypto_db[name]
+    return None, None
 
-if "sustainable" in user_query:
-    recommend = max(crypto_db, key=lambda x: crypto_db[x]["sustainability_score"])
-    print(f"{bot_name}: Invest in {recommend}! 🌱 It's eco-friendly and has long-term potential!")
+def main():
+    print(greeting)
+    print("Type 'help' for options or 'exit' to quit.")
+    crypto_db, symbol_lookup = fetch_crypto_db()
 
-elif "trending" in user_query or "rising" in user_query:
-    trending_coins = [coin for coin, data in crypto_db.items() if data["price_trend"] == "rising"]
-    print(f"{bot_name}: These cryptos are rising: {', '.join(trending_coins)} 🚀")
-
-elif "long-term" in user_query or "growth" in user_query:
-    for coin, data in crypto_db.items():
-        if data["price_trend"] == "rising" and data["sustainability_score"] > 0.7:
-            print(f"{bot_name}: {coin} is trending up and very sustainable. Great for long-term growth! 🚀🌱")
+    while True:
+        user_query = input("You: ").lower().strip()
+        if user_query in ["exit", "quit"]:
+            print(f"{bot_name}: Goodbye! 👋")
             break
 
-elif "best" in user_query:
-    best_coin = None
-    for coin, data in crypto_db.items():
-        if data["price_trend"] == "rising" and data["market_cap"] == "high":
-            best_coin = coin
-            break
-    if best_coin:
-        print(f"{bot_name}: {best_coin} is looking profitable with a strong trend and market cap! 💰")
+        if any(greet in user_query for greet in ["hello", "hi", "hey"]):
+            print(f"{bot_name}: {greeting}")
 
-else:
-    print(f"{bot_name}: Sorry, I don't have advice for that. Try asking about trends or sustainability!")
-    
-print("Disclaimer: Crypto is risky—always do your own research! 🚨")
+        elif "help" in user_query:
+            print(f"""{bot_name}: You can ask me about:
+    - Price of a coin (e.g. "price bitcoin" or "price eth")
+    - Market cap of a coin (e.g. "market cap ethereum" or "market cap btc")
+    - 24h change of a coin (e.g. "change solana")
+    - Symbol of a coin (e.g. "symbol dogecoin")
+    - Trending/rising coins
+    - Top currency or top N currencies (e.g. "top currency", "top 5 currencies")
+    - Type 'exit' to quit.
+    """)
+
+        elif "top currency" in user_query or "top coin" in user_query:
+            # Show the top 1 coin by market cap
+            top = sorted(crypto_db.items(), key=lambda x: -x[1]['market_cap'])
+            name, info = top[0]
+            print(f"{bot_name}: The top currency is {name.title()} (${info['symbol']}), price: ${info['price']:,}, market cap: ${info['market_cap']:,}")
+
+        elif "top" in user_query and ("currenc" in user_query or "coin" in user_query):
+            # e.g. "top 5 currencies"
+            match = re.search(r'top\s+(\d+)', user_query)
+            n = int(match.group(1)) if match else 5
+            top = sorted(crypto_db.items(), key=lambda x: -x[1]['market_cap'])[:n]
+            print(f"{bot_name}: Top {n} currencies by market cap:")
+            for i, (name, info) in enumerate(top, 1):
+                print(f"  {i}. {name.title()} (${info['symbol']}): ${info['price']:,} (Market Cap: ${info['market_cap']:,})")
+
+        elif "price" in user_query:
+            coin_name, info = find_coin_in_query(user_query, crypto_db, symbol_lookup)
+            if info:
+                print(f"{bot_name}: {coin_name.title()} (${info['symbol']}): ${info['price']:,}")
+            else:
+                print(f"{bot_name}: Please specify a coin (e.g. 'price bitcoin').")
+
+        elif "market cap" in user_query:
+            coin_name, info = find_coin_in_query(user_query, crypto_db, symbol_lookup)
+            if info:
+                print(f"{bot_name}: {coin_name.title()} market cap: ${info['market_cap']:,}")
+            else:
+                print(f"{bot_name}: Please specify a coin (e.g. 'market cap ethereum').")
+
+        elif "change" in user_query:
+            coin_name, info = find_coin_in_query(user_query, crypto_db, symbol_lookup)
+            if info:
+                print(f"{bot_name}: {coin_name.title()} 24h change: {info['price_change_24h']:.2f}% ({info['price_trend']})")
+            else:
+                print(f"{bot_name}: Please specify a coin (e.g. 'change solana').")
+
+        elif "symbol" in user_query:
+            coin_name, info = find_coin_in_query(user_query, crypto_db, symbol_lookup)
+            if info:
+                print(f"{bot_name}: {coin_name.title()} symbol: {info['symbol']}")
+            else:
+                print(f"{bot_name}: Please specify a coin (e.g. 'symbol dogecoin').")
+
+        elif "trending" in user_query or "rising" in user_query:
+            trending = [name.title() for name, info in crypto_db.items() if info["price_trend"] == "rising"]
+            if trending:
+                print(f"{bot_name}: These cryptos are rising: {', '.join(trending[:10])} 🚀")
+            else:
+                print(f"{bot_name}: No trending coins found right now.")
+
+        else:
+            print(f"{bot_name}: Sorry, I don't have advice for that. Type 'help' to see what I can do!")
+
+        print("Disclaimer: Crypto is risky—always do your own research! 🚨")
+
+if __name__ == "__main__":
+    main()

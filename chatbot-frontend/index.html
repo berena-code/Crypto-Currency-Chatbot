@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>CryptoBuddy Chatbot</title>
+    <link rel="stylesheet" href="style.css">
+    <!-- Font Awesome for crypto icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+    <div class="crypto-bg">
+        <i class="fa-brands fa-bitcoin bitcoin"></i>
+        <i class="fa-brands fa-ethereum ethereum"></i>
+        <i class="fa-brands fa-litecoin-sign litecoin"></i>
+        <i class="fa-brands fa-monero monero"></i>
+        <i class="fa-brands fa-dash dash"></i>
+        <i class="fa-brands fa-dogecoin dogecoin"></i>
+        <i class="fa-brands fa-xrp xrp"></i>
+        <i class="fa-brands fa-usdt usdt"></i>
+        <i class="fa-solid fa-coins cardano"></i>
+        <i class="fa-brands fa-bitcoin bitcoin"></i>
+        <i class="fa-brands fa-ethereum ethereum"></i>
+        <i class="fa-brands fa-litecoin-sign litecoin"></i>
+        <i class="fa-brands fa-monero monero"></i>
+        <i class="fa-brands fa-dash dash"></i>
+        <i class="fa-brands fa-dogecoin dogecoin"></i>
+        <i class="fa-brands fa-xrp xrp"></i>
+        <i class="fa-brands fa-usdt usdt"></i>
+        <i class="fa-solid fa-coins cardano"></i>
+        <i class="fa-brands fa-bitcoin bitcoin"></i>
+        <i class="fa-brands fa-ethereum ethereum"></i>
+        <i class="fa-brands fa-litecoin-sign litecoin"></i>
+        <i class="fa-brands fa-monero monero"></i>
+        <i class="fa-brands fa-dash dash"></i>
+        <i class="fa-brands fa-dogecoin dogecoin"></i>
+        <i class="fa-brands fa-xrp xrp"></i>
+        <i class="fa-brands fa-usdt usdt"></i>
+        <i class="fa-solid fa-coins cardano"></i>
+        <i class="fa-brands fa-bitcoin bitcoin"></i>
+        <i class="fa-brands fa-ethereum ethereum"></i>
+        <i class="fa-brands fa-litecoin-sign litecoin"></i>
+        <i class="fa-brands fa-monero monero"></i>
+        <i class="fa-brands fa-dash dash"></i>
+        <i class="fa-brands fa-dogecoin dogecoin"></i>
+        <i class="fa-brands fa-xrp xrp"></i>
+        <i class="fa-brands fa-usdt usdt"></i>
+        <i class="fa-solid fa-coins cardano"></i>
+    </div>
+    <div class="ticker-container">
+        <div class="ticker" id="ticker"></div> 
+    </div>
+    <div class="main-content">
+        <div class="left-panel">
+            <div class="crypto-info">
+                <h2><i class="fa-solid fa-coins"></i> Top 10 Crypto Prices</h2>
+                <div id="top10-grid" class="crypto-grid"></div>
+                <div style="margin: 15px 0 0 0;">
+                    <a href="/all.html" class="view-more-link">View More &rarr;</a>
+                </div>
+            </div>
+            <div class="news-articles-row">
+                <div class="crypto-news">
+                    <h2><i class="fa-regular fa-newspaper"></i> Latest Crypto News</h2>
+                    <ul id="news">
+                        <li>Loading news...</li>
+                    </ul>
+                </div>
+                <div class="crypto-articles">
+                    <h2><i class="fa-solid fa-book-open"></i> Top Crypto Articles</h2>
+                    <ul id="articles">
+                        <li>Loading articles...</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        <div class="chatbot-fixed">
+            <div class="chatbot-container">
+                <div class="chatbot-header">
+                    <img src="https://cdn-icons-png.flaticon.com/512/4712/4712035.png" alt="Chatbot Icon" class="chatbot-icon">
+                    <span>CryptoBuddy</span>
+                </div>
+                <div class="chatbot-messages" id="chatbot-messages">
+                    <div class="bot-message">Hey there! 👋 I'm CryptoBuddy, your AI sidekick for smart crypto advice!</div>
+                </div>
+                <form id="chat-form">
+                    <input type="text" id="user-input" placeholder="Ask me about crypto..." autocomplete="off" required>
+                    <button type="submit"><i class="fa-solid fa-paper-plane"></i></button>
+                </form>
+            </div>
+        </div>
+    </div>
+    <script src="script.js"></script>
+</body>
+</html>
